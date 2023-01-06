@@ -15,3 +15,6 @@ class Package():
         self.STATE = state
         self.ZIP = zip
         self.STATUS = status
+
+    def toList(self):
+        return [self.ID, self.ADDRESS, self.DEADLINE, self.CITY, self.STATE, self.ZIP, self.STATUS]
