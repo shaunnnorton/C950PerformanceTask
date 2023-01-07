@@ -8,7 +8,9 @@ class Package():
     STATE = None
     ZIP = None
     STATUS = None
-    def __init__(self,id: int,address: str,deadline: str,city: str,state: str,zip: str ,status: int) -> None:
+    WEIGHT = None
+    NOTES = None
+    def __init__(self,id: int,address: str,deadline: str,city: str,state: str,zip: str ,status: int, weight: float, notes: str) -> None:
         """Initialize Package with all variables"""
         self.ID = id
         self.ADDRESS = address
@@ -17,6 +19,8 @@ class Package():
         self.STATE = state
         self.ZIP = zip
         self.STATUS = status
+        self.WEIGHT = weight
+        self.NOTES = notes
 
     def toTuple(self):
         """Returns a tuple containg all the Package information."""

@@ -4,7 +4,7 @@ class Address():
     City = None
     State = None
     ZIP = None 
-    connections = {}
+    connections = []
     def __init__(self,id: int, street: str, city: str, state: str, zip: str) -> None:
         self.ID = id
         self.Street = street
