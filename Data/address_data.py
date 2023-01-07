@@ -5,6 +5,7 @@ class AddressData():
     @staticmethod
     def getAddresss(address_file: str) -> dict:
         addresses = dict()
+        addresses[-1] = {}
         with open(address_file, "r") as adcsv:
             reader = csv.reader(adcsv)
             for i in range(7):
@@ -25,6 +26,8 @@ class AddressData():
                 new_address.add_connections(connections)
 
                 addresses[id] = new_address
+                addresses[-1][street] = id
+                id_count+=1
         return(addresses)
 
 
