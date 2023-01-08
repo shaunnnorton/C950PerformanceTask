@@ -17,31 +17,31 @@ class Actions():
         beginDate = datetime.now().date()
         openingTime = datetime(beginDate.year,beginDate.month, beginDate.day, 8, 0, 0, 0)
         match specialNote[0]:
-            case specialActions.DELAY:
+            case specialActions.DELAY.value:
                 day,opening = Utils.getDefaultDates()
                 delayedTime = day.timedelta(hours=specialNote[1],minutes=specialNote[2])
                 if delayedTime < currentTime:
                     return True , ()
                 else:
                     return False , ()
-            case specialActions.TRUCK:
+            case specialActions.TRUCK.value:
                 if specialNote[1] != truck.getTruckNumber:
                     return False , ()
                 else:
                     return True
-            case specialActions.WITH:
+            case specialActions.WITH.value:
                 partneredPackages = list(specialNote[2::])
                 truck_packages = truck.getPackages()
                 for package in partneredPackages:
                     if package in truck_packages:
                         partneredPackages.delete(package)
-                if partneredPackages == 0:
+                if len(partneredPackages) == 0:
                     return True , ()
                 elif len(partneredPackages) + len(truck_packages) <= 16:
                     return True , tuple(partneredPackages)
                 else: 
                     return False
-            case specialActions.ADDRESS:
+            case specialActions.ADDRESS.value:
                 day,opening = Utils.getDefaultDates()
                 delayedTime = day.timedelta(hours=specialNote[3],minutes=specialNote[4])
                 if delayedTime < currentTime:
