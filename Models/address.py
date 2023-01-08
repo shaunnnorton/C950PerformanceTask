@@ -10,4 +10,4 @@ class Address():
         self.ZIP = zip
 
     def add_connections(self, connections):
-        self.connections = connections.sort(key=lambda val: val[1])
+        self.connections =  connections #sorted(connections, key=lambda val: val[1])   #connections.sorted(key=lambda val: val[1])

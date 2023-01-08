@@ -1,3 +1,4 @@
+from Models.package import Package
 class Truck():
     _DRIVER = ''
     _PACKAGES = {}

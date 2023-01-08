@@ -1,6 +1,6 @@
 import csv
 from enum import Enum as e
-from Models.pacakges import Packages
+from Models.packages import Packages
 from Models.package import Package
 
 class PackageFields(e):
@@ -30,19 +30,17 @@ class PackageData():
         with open(package_file, "r") as pkcsv:
             reader = csv.reader(pkcsv)
             for i in range(7):
-                reader.next()
-            headers = reader.next()
+                reader.__next__()
+            reader.__next__()
             for row in reader:
-                new_package = Package(row[PackageFields.ID_INDEX],
-                                        row[PackageFields.ADDRESS_INDEX],
-                                        row[PackageFields.DEADLINE_INDEX],
-                                        row[PackageFields.CITY_INDEX],
-                                        row[PackageFields.STATE_INDEX],
-                                        row[PackageFields.ZIP_INDEX],
-                                        PackageFields.HUB_STATUS,
-                                        row[PackageFields.MASS_INDEX],
-                                        row[PackageFields.SPNOTES_INDEX])
+                new_package = Package(int(row[PackageFields.ID_INDEX.value]),
+                                        row[PackageFields.ADDRESS_INDEX.value],
+                                        row[PackageFields.DEADLINE_INDEX.value],
+                                        row[PackageFields.CITY_INDEX.value],
+                                        row[PackageFields.STATE_INDEX.value],
+                                        row[PackageFields.ZIP_INDEX.value],
+                                        PackageFields.HUB_STATUS.value,
+                                        row[PackageFields.MASS_INDEX.value],
+                                        row[PackageFields.SPNOTES_INDEX.value])
                 new_packages.insert_package(new_package)
         return new_packages 
-        
-    
