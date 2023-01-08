@@ -1,7 +1,8 @@
 from Models.package import Package
+from Models.packages import Packages
 class Truck():
     _DRIVER = ''
-    _PACKAGES = {}
+    _PACKAGES = []
     #_DISTANCE_TRAVELLED = 0
     _TRUCK_NUMBER = 0
 
@@ -11,7 +12,7 @@ class Truck():
     def getDriver(self):
         return self._DRIVER
 
-    def addPackage(self, package: int):
+    def addPackage(self, package: int, packageList: Packages):
         self._PACKAGES.add(package)
     
     def getPackages(self):

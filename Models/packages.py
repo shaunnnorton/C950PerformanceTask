@@ -5,6 +5,7 @@ class Packages():
     """Class to provide hashtable functionality to sort and store packages."""
     hash_buckets = 20 #initial hash table size
     packages = [] #initialize hashtable with 0 buckets
+    addresses = {}
 
     def __init__(self) -> None:
         """Initializes hash table with 20 buckets"""
@@ -71,3 +72,7 @@ class Packages():
         """Calculatest the bucket in the hash table using an id"""
         return id % self.hash_buckets # Take the Mod of the id and the amount of buckets. 
 
+
+    def setAddresses(self, addresses):
+        self.addresses = addresses
+    
