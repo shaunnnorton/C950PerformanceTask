@@ -24,10 +24,11 @@ class selectPackage():
                     closest = (package,distance)
                 else:
                     continue
-
         return closest[0]
 
-
+    @staticmethod
+    def addPackage(package: Package , packages: Packages):
+        pass
 
 
     
