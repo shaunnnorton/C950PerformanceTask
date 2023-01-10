@@ -56,7 +56,7 @@ class Actions():
     @staticmethod
     def translateAction(note: str, package: int) -> tuple:
         if note == " | ":
-            return ()
+            return (-1,package)
         split = note.split("|")
         actionString=split[1].strip()
         match actionString[0]:
@@ -74,7 +74,7 @@ class Actions():
             case "3":
                 return (3, package ,actionString[1:3],actionString[3:5],actionString[5:7])
             case _:
-                return ()
+                return (-1,package)
 
 
     @staticmethod
