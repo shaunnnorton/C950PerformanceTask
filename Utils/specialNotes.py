@@ -20,7 +20,7 @@ class Actions():
         match specialNote[0]:
             case specialActions.DELAY.value:
                 day,opening = Utils.getDefaultDates()
-                delayedTime = day.timedelta(hours=specialNote[1],minutes=specialNote[2])
+                delayedTime = datetime(hours=specialNote[1],minutes=specialNote[2])
                 if delayedTime < currentTime:
                     return True , ()
                 else:
@@ -39,7 +39,7 @@ class Actions():
                             return False, tuple()
             case specialActions.ADDRESS.value:
                 day,opening = Utils.getDefaultDates()
-                delayedTime = day.timedelta(hours=specialNote[3],minutes=specialNote[4])
+                delayedTime = datetime(hours=specialNote[3],minutes=specialNote[4])
                 if delayedTime < currentTime:
                     package = packages.select_package(specialNote[1])
                     newAddress = packages.addresses[specialNote[2]]
