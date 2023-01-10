@@ -3,13 +3,13 @@ from Models.package import Package
 
 class Packages():
     """Class to provide hashtable functionality to sort and store packages."""
-    
+    addresses = {}
+
 
     def __init__(self) -> None:
         """Initializes hash table with 20 buckets"""
         self.hash_buckets = 20 #initial hash table size
         self.packages = [] #initialize hashtable with 0 buckets
-        self.addresses = {}
         self.grouped_packages = []
         
         for i in range(self.hash_buckets): #create an empty list 20 times to serve as buckets.

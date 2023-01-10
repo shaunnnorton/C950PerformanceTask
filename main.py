@@ -41,3 +41,10 @@ beginDate = datetime.now().date()
 openingTime = datetime(beginDate.year,beginDate.month, beginDate.day, 8, 0, 0, 0)
 print(beginDate.strftime("%m %d %y %I %M"))
 print(openingTime.strftime("%m %d %y %I %M"))
+
+selectPackage.addPackage(packages.select_package(20),packages,assigned,Truck1,datetime(hour=8))
+while len(Truck1._PACKAGES) < 16:
+    nextPackage = selectPackage.selectNextShortset(packages,packages.select_package(Truck1._PACKAGES[-1][0]),packages.addresses)
+    selectPackage.addPackage(nextPackage[0],packages,assigned,Truck1,datetime(hour=8))
+
+print(Truck1._PACKAGES)
