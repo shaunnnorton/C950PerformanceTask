@@ -9,19 +9,19 @@ from datetime import datetime,timedelta
 class selectPackage():
 
     @staticmethod
-    def selectNextShortest(unassignedPackages: Packages, currentPackage: Package, addressList: Address) -> Package:
-        currentPackageAddress = addressList[addressList[-1][currentPackage.ADDRESS]]
+    def selectNextShortest(unassignedPackages: Packages, currentAddress: str, addressList: Address) -> Package:
+        startAddress = addressList[addressList[-1][currentAddress]]
         closest= (None, 10000.00)
         for package in unassignedPackages.get_packages():
             comparePackageAddress = addressList[addressList[-1][package.ADDRESS]]
-            if currentPackageAddress.ID > comparePackageAddress.ID:
-                distance = currentPackageAddress.connections[comparePackageAddress.ID][1]
+            if startAddress.ID > comparePackageAddress.ID:
+                distance = startAddress.connections[comparePackageAddress.ID][1]
                 if distance < closest[1]:
                     closest = (package,distance)
                 else:
                     continue
             else:
-                distance = comparePackageAddress.connections[currentPackageAddress.ID][1]
+                distance = comparePackageAddress.connections[startAddress.ID][1]
                 if distance < closest[1]:
                     closest = (package,distance)
                 else:
@@ -47,7 +47,7 @@ class selectPackage():
                     for id in alsoAdd:
                         loop_packages.insert_package(unassigned_packages.select_package(id))
                     while len(alsoAdd) > 0:
-                        next = selectPackage.selectNextShortest(loop_packages,current,unassigned_packages.addresses)
+                        next = selectPackage.selectNextShortest(loop_packages,current.ADDRESS,unassigned_packages.addresses)
                         truck.addPackage((next[0].ID,next[1]), unassigned_packages)
                         loop_packages.delete_package(next.ID)
                         current = next
