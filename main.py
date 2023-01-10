@@ -70,8 +70,8 @@ firstPackage = selectPackage.selectNextShortest(deadlined_packages,deadlined_pac
 selectPackage.addPackage(firstPackage[0],deadlined_packages, assigned,Truck2,datetime(hour=8),firstPackage[1])
 packages.delete_package(firstPackage[0].ID)   
     
-    if len(Truck2._PACKAGES) < 16 and len(Truck2._PACKAGES) > 0:
-        nextPackage = selectPackage.selectNextShortest(packages,packages.select_package(Truck1._PACKAGES[-1][0].ADDRESS),packages.addresses)
+if len(Truck2._PACKAGES) < 16 and len(Truck2._PACKAGES) > 0:
+    nextPackage = selectPackage.selectNextShortest(packages,packages.select_package(Truck1._PACKAGES[-1][0].ADDRESS),packages.addresses)
     selectPackage.addPackage(nextPackage[0],packages,assigned,Truck1,datetime(hour=8),nextPackage[1])
 
 
