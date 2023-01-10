@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from Models.packages import Packages
 from Models.package import Package
 from Models.address import Address
+from Models.truck import Truck
 
 class specialActions(e):
     DELAY = 0
@@ -13,9 +14,9 @@ class specialActions(e):
 
 class Actions():
     @staticmethod
-    def verifyAvalible(specialNote: tuple, truck: Truck, currentTime, packages: Packages) -> tuple(bool,tuple[int]):
-        beginDate = datetime.now().date()
-        openingTime = datetime(beginDate.year,beginDate.month, beginDate.day, 8, 0, 0, 0)
+    def verifyAvalible(specialNote: tuple, truck: Truck, currentTime, packages: Packages) -> tuple():
+        if len(specialNote) == 0:
+            return True, ()
         match specialNote[0]:
             case specialActions.DELAY.value:
                 day,opening = Utils.getDefaultDates()
@@ -30,17 +31,12 @@ class Actions():
                 else:
                     return True
             case specialActions.WITH.value:
-                partneredPackages = list(specialNote[2::])
-                truck_packages = truck.getPackages()
-                for package in partneredPackages:
-                    if package in truck_packages:
-                        partneredPackages.delete(package)
-                if len(partneredPackages) == 0:
-                    return True , ()
-                elif len(partneredPackages) + len(truck_packages) <= 16:
-                    return True , tuple(partneredPackages)
-                else: 
-                    return False
+                for group in packages.grouped_packages:
+                    if specialNote[1] in group:
+                        if len(group)+len(truck.getPackages())<=16:
+                            return True, tuple(group)
+                        else:
+                            return False, tuple()
             case specialActions.ADDRESS.value:
                 day,opening = Utils.getDefaultDates()
                 delayedTime = day.timedelta(hours=specialNote[3],minutes=specialNote[4])
@@ -52,11 +48,15 @@ class Actions():
                     return True , ()
                 else: 
                     return False , ()
+            case _:
+                return True, ()
 
 
     
     @staticmethod
     def translateAction(note: str, package: int) -> tuple:
+        if note == " | ":
+            return ()
         split = note.split("|")
         actionString=split[1].strip()
         match actionString[0]:
@@ -67,12 +67,29 @@ class Actions():
             case "2":
                 action = [2,package]
                 count=1
-                while count<=(len(note)-1):
+                while count+2<=(len(actionString)):
                     action.append(int(actionString[count:count+2]))
                     count+=2
                 return tuple(action)
             case "3":
                 return (3, package ,actionString[1:3],actionString[3:5],actionString[5:7])
+            case _:
+                return ()
 
 
+    @staticmethod
+    def groupPackages(packages: Packages):
+        for package in packages.get_packages():
+            translatedNote = Actions.translateAction(package.NOTES, package.ID)
+            if (len(translatedNote)!=0) and (translatedNote[0] == 2):
+                if len(packages.grouped_packages) == 0:
+                    packages.grouped_packages.append(set(translatedNote[1::]))
+                for index, group in enumerate(packages.grouped_packages):
+                    if any( ele in group for ele in translatedNote[1::]):
+                        packages.grouped_packages[index] = group.union(set(translatedNote[1::]))
+                        break
+                    else:
+                        packages.grouped_packages.append(set(translatedNote[1::]))
+            else:
+                continue
     
