@@ -9,7 +9,7 @@ from datetime import datetime,timedelta
 class selectPackage():
 
     @staticmethod
-    def selectNextShortest(unassignedPackages: Packages, currentAddress: str, addressList: Address) -> Package:
+    def selectNextShortest(unassignedPackages: Packages, currentAddress: str, addressList: dict) -> tuple:
         startAddress = addressList[addressList[-1][currentAddress]]
         closest= (None, 10000.00)
         for package in unassignedPackages.get_packages():
@@ -41,18 +41,18 @@ class selectPackage():
                     alsoAdd = list(alsoAdd)
                     truck.addPackage((current_package.ID,distance),unassigned_packages)
                     assigned_packages.insert_package(current_package)
-                    current = current_package
-                    alsoAdd.remove(current.ID)
+                    current = (current_package,0)
+                    alsoAdd.remove(current[0].ID)
                     loop_packages = Packages()
                     for id in alsoAdd:
                         loop_packages.insert_package(unassigned_packages.select_package(id))
                     while len(alsoAdd) > 0:
-                        next = selectPackage.selectNextShortest(loop_packages,current.ADDRESS,unassigned_packages.addresses)
+                        next = selectPackage.selectNextShortest(loop_packages,current[0].ADDRESS,unassigned_packages.addresses)
                         truck.addPackage((next[0].ID,next[1]), unassigned_packages)
-                        loop_packages.delete_package(next.ID)
+                        loop_packages.delete_package(next[0].ID)
                         current = next
-                        alsoAdd.remove(next.ID)
-                        assigned_packages.insert_package(current)
+                        alsoAdd.remove(next[0].ID)
+                        assigned_packages.insert_package(current[0])
                 return True
             case False:
                 print(f"Package {current_package.ID} cannot be added to {truck._TRUCK_NUMBER}")

@@ -14,9 +14,9 @@ class Truck():
     def getDriver(self):
         return self._DRIVER
 
-    def addPackage(self, package: int, packageList: Packages):
+    def addPackage(self, package: tuple, packageList: Packages):
         self._PACKAGES.append(package)
-        packageList.delete_package(package)
+        packageList.delete_package(package[0])
     
     def getPackages(self):
         return self._PACKAGES

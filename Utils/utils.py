@@ -3,9 +3,9 @@ import datetime as dt
 class Utils():
 
     @staticmethod
-    def getDefaultDates()-> dt.datetime:
-        beginDT = dt.now().date()
-        openingTime = dt.datetime(hour=8)
-        return beginDT, openingTime
+    def getDefaultDates()-> tuple:
+        todayDT = dt.datetime.today()
+        openingTime = todayDT + dt.timedelta(hours=8)
+        return todayDT, openingTime
 
     

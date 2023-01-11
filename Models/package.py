@@ -1,15 +1,6 @@
 
 class Package():
     """Class to provide a data model for a Package"""
-    ID = None
-    ADDRESS = None
-    DEADLINE = None
-    CITY = None
-    STATE = None
-    ZIP = None
-    STATUS = None
-    WEIGHT = None
-    NOTES = None
     def __init__(self,id: int,address: str,deadline: str,city: str,state: str,zip: str ,status: int, weight: float, notes: str) -> None:
         """Initialize Package with all variables"""
         self.ID = id

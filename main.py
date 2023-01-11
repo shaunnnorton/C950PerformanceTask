@@ -19,15 +19,15 @@ Actions.groupPackages(packages)
 print(packages.grouped_packages)
 
 assigned = Packages()
-Truck1 = Truck()
+Truck1 = Truck("TED", 1)
 
 
-selectPackage.addPackage(packages.select_package(1),packages,assigned,Truck1,"SS")
+# selectPackage.addPackage(packages.select_package(1),packages,assigned,Truck1,"SS")
 
-print(Truck1._PACKAGES)
-selectPackage.addPackage(packages.select_package(20),packages,assigned,Truck1,"SS")
-selectPackage.addPackage(packages.select_package(38),packages,assigned,Truck1,"SS")
-selectPackage.addPackage(packages.select_package(32),packages,assigned,Truck1,"SS")
+# print(Truck1._PACKAGES)
+# selectPackage.addPackage(packages.select_package(20),packages,assigned,Truck1,"SS")
+# selectPackage.addPackage(packages.select_package(38),packages,assigned,Truck1,"SS")
+# selectPackage.addPackage(packages.select_package(32),packages,assigned,Truck1,"SS")
 
 print(Truck1._PACKAGES)
 
@@ -53,7 +53,7 @@ while len(Truck1._PACKAGES) < 16:
 print(Truck1._PACKAGES)
 
 deadlines=list
-for package in packages.get_packages:
+for package in packages.get_packages():
     deadline = selectPackage.get_deadline(package)
     if deadline:
         deadlines.append((deadline, package))
