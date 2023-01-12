@@ -121,7 +121,8 @@ print(Truck1._PACKAGES)
 
 
 
-
+print(Truck1.getRouteLength())
+print(Truck2.getRouteLength())
 
 
 
