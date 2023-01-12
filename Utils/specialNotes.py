@@ -19,27 +19,34 @@ class Actions():
             return True, ()
         match specialNote[0]:
             case specialActions.DELAY.value:
+                # print(specialNote)
+                # print("CASE 1")
                 day,opening = Utils.getDefaultDates()
-                delayedTime = datetime(hours=specialNote[1],minutes=specialNote[2])
+                delayedTime = day + timedelta(hours=specialNote[1],minutes=specialNote[2])
                 if delayedTime < currentTime:
                     return True , ()
                 else:
                     return False , ()
             case specialActions.TRUCK.value:
+                # print("CASE 2")
                 if specialNote[1] != truck.getTruckNumber:
                     return False , ()
                 else:
-                    return True
+                    return True , ()
             case specialActions.WITH.value:
+                # print("CASE 3")
                 for group in packages.grouped_packages:
                     if specialNote[1] in group:
                         if len(group)+len(truck.getPackages())<=16:
                             return True, tuple(group)
                         else:
-                            return False, tuple()
+                            return False, ()
+                return True, ()
             case specialActions.ADDRESS.value:
+                # print("CASE 4")
+
                 day,opening = Utils.getDefaultDates()
-                delayedTime = datetime(hours=specialNote[3],minutes=specialNote[4])
+                delayedTime = day+ timedelta(hours=specialNote[3],minutes=specialNote[4])
                 if delayedTime < currentTime:
                     package = packages.select_package(specialNote[1])
                     newAddress = packages.addresses[specialNote[2]]
@@ -49,6 +56,8 @@ class Actions():
                 else: 
                     return False , ()
             case _:
+                # print("NO CASE")
+
                 return True, ()
 
 
@@ -61,7 +70,7 @@ class Actions():
         actionString=split[1].strip()
         match actionString[0]:
             case "0":
-                return (0,actionString[1:3],actionString[3:5])
+                return (0,int(actionString[1:3]),int(actionString[3:5]))
             case "1":
                 return (1, int(actionString[1::]))
             case "2":
@@ -72,7 +81,7 @@ class Actions():
                     count+=2
                 return tuple(action)
             case "3":
-                return (3, package ,actionString[1:3],actionString[3:5],actionString[5:7])
+                return (3, package ,int(actionString[1:3]),int(actionString[3:5]),int(actionString[5:7]))
             case _:
                 return (-1,package)
 
