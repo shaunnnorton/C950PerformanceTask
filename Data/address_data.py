@@ -3,7 +3,7 @@ from Models.address import Address
 
 class AddressData():
     @staticmethod
-    def getAddresss(address_file: str) -> dict:
+    def getAddresses(address_file: str) -> dict:
         addresses = dict()
         addresses[-1] = {}
         with open(address_file, "r") as adcsv:

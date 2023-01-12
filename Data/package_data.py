@@ -1,7 +1,5 @@
 import csv
 from enum import Enum as e
-from Models.packages import Packages
-from Models.package import Package
 
 class PackageFields(e):
     #Indexes in CSV
@@ -18,7 +16,8 @@ class PackageFields(e):
     HUB_STATUS = 1
     TRANSIT_STATUS = 2
 
-
+from Models.packages import Packages
+from Models.package import Package
 
 package_file = "Data/WGUPS Package File - Sheet1.csv"
 
@@ -39,7 +38,7 @@ class PackageData():
                                         row[PackageFields.CITY_INDEX.value],
                                         row[PackageFields.STATE_INDEX.value],
                                         row[PackageFields.ZIP_INDEX.value],
-                                        PackageFields.HUB_STATUS.value,
+                                        PackageFields.HUB_STATUS,
                                         float(row[PackageFields.MASS_INDEX.value]),
                                         row[PackageFields.SPNOTES_INDEX.value])
                 new_packages.insert_package(new_package)

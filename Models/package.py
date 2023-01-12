@@ -1,7 +1,9 @@
+from Data.package_data import PackageFields
+from datetime import timedelta
 
 class Package():
     """Class to provide a data model for a Package"""
-    def __init__(self,id: int,address: str,deadline: str,city: str,state: str,zip: str ,status: int, weight: float, notes: str) -> None:
+    def __init__(self,id: int,address: str,deadline: str,city: str,state: str,zip: str ,status: PackageFields, weight: float, notes: str) -> None:
         """Initialize Package with all variables"""
         self.ID = id
         self.ADDRESS = address
@@ -12,6 +14,7 @@ class Package():
         self.STATUS = status
         self.WEIGHT = weight
         self.NOTES = notes
+        self.TimeDelivered = timedelta()
 
     def toTuple(self):
         """Returns a tuple containg all the Package information."""

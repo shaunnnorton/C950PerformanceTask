@@ -22,7 +22,7 @@ class Actions():
                 # print(specialNote)
                 # print("CASE 1")
                 day,opening = Utils.getDefaultDates()
-                delayedTime = day + timedelta(hours=specialNote[1],minutes=specialNote[2])
+                delayedTime = timedelta(hours=specialNote[1],minutes=specialNote[2])
                 if delayedTime < currentTime:
                     return True , ()
                 else:
@@ -37,7 +37,7 @@ class Actions():
                 # print("CASE 3")
                 for group in packages.grouped_packages:
                     if specialNote[1] in group:
-                        if len(group)+len(truck.getPackages())<=16:
+                        if len(group)+len(truck.getPackages()[-1])<=16:
                             return True, tuple(group)
                         else:
                             return False, ()
@@ -46,7 +46,7 @@ class Actions():
                 # print("CASE 4")
 
                 day,opening = Utils.getDefaultDates()
-                delayedTime = day+ timedelta(hours=specialNote[3],minutes=specialNote[4])
+                delayedTime = timedelta(hours=specialNote[3],minutes=specialNote[4])
                 if delayedTime < currentTime:
                     package = packages.select_package(specialNote[1])
                     newAddress = packages.addresses[specialNote[2]]
