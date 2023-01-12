@@ -45,7 +45,7 @@ class AddressData():
 
 
 
-
+    @staticmethod
     def parseAddress(address: str) -> tuple:
         split_address = address.split("\n")
         address_street = split_address[0].strip()

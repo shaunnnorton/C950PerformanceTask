@@ -30,7 +30,7 @@ class Packages():
                 continue
             else:
                 return i.toTuple() #return a list containing all the information of the package
-        return None #return an empty list if no Package is found
+        return tuple() #return an empty list if no Package is found
 
     
 
@@ -51,7 +51,7 @@ class Packages():
                 continue
             else:
                 return i #return the package
-        return None #return an empty list if no Package is found
+        return None # type: ignore #return an empty list if no Package is found
 
 
     def get_packages(self):

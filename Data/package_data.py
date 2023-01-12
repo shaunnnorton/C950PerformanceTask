@@ -40,7 +40,7 @@ class PackageData():
                                         row[PackageFields.STATE_INDEX.value],
                                         row[PackageFields.ZIP_INDEX.value],
                                         PackageFields.HUB_STATUS.value,
-                                        row[PackageFields.MASS_INDEX.value],
+                                        float(row[PackageFields.MASS_INDEX.value]),
                                         row[PackageFields.SPNOTES_INDEX.value])
                 new_packages.insert_package(new_package)
         return new_packages 

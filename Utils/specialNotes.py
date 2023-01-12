@@ -14,7 +14,7 @@ class specialActions(e):
 
 class Actions():
     @staticmethod
-    def verifyAvalible(specialNote: tuple, truck: Truck, currentTime, packages: Packages) -> tuple():
+    def verifyAvalible(specialNote: tuple, truck: Truck, currentTime, packages: Packages) -> tuple:
         if len(specialNote) == 0:
             return True, ()
         match specialNote[0]:
