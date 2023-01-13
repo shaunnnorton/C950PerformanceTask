@@ -12,9 +12,9 @@ class PackageFields(e):
     MASS_INDEX = 6
     SPNOTES_INDEX = 7
     #Package Statues
-    DELIVERED_STATUS = 0
-    HUB_STATUS = 1
-    TRANSIT_STATUS = 2
+    DELIVERED_STATUS = 200
+    HUB_STATUS = 202
+    TRANSIT_STATUS = 204
 
 from Models.packages import Packages
 from Models.package import Package

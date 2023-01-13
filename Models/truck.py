@@ -8,7 +8,7 @@ class Truck():
     def __init__(self,driver,truck_number) -> None:
         self._DRIVER =  driver
         self._PACKAGES = []
-        self._DISTANCE_TRAVELLED = 0
+        self._DISTANCE_TRAVELLED = float()
         self._TRUCK_NUMBER = truck_number
 
     def setDriver(self, name:str):
@@ -21,6 +21,7 @@ class Truck():
         if len(self._PACKAGES) < route:
             self._PACKAGES.append([])        
         self._PACKAGES[route-1].append(package)
+        packageList.select_package(package[0]).STATUS = PackageFields.TRANSIT_STATUS
         packageList.delete_package(package[0])
     
     def getPackages(self):
@@ -35,19 +36,20 @@ class Truck():
     def getTruckNumber(self):
         return self._TRUCK_NUMBER
 
-    def getRouteLength(self):
+    def getAllRoutesLength(self):
         distance = 0
         for i in self._PACKAGES:
-            distance += i[1]
+            for j in i:
+                distance += j[1]
         return distance
 
-    def traveledAtTime(self,time: datetime):
-        totalRouteTime = self.getRouteLength()+self._DISTANCE_TRAVELLED/18
-        timeSinceOpen = time - timedelta(hours=8)
+    # def traveledAtTime(self,time: datetime):
+    #     totalRouteTime = self.getRouteLength()+self._DISTANCE_TRAVELLED/18
+    #     timeSinceOpen = time - timedelta(hours=8)
     
-    def deliverPackages(self, departTime: timedelta, packagesHash: Packages, deliveredPackages: Packages):
+    def deliverPackages(self, departTime: timedelta, packagesHash: Packages, deliveredPackages: Packages, route: int):
         distanceTraveled = 0
-        for stop in self._PACKAGES[-1]:
+        for stop in self._PACKAGES[route-1]:
             distanceTraveled += stop[1]
 
             package = packagesHash.select_package(stop[0])
@@ -57,3 +59,4 @@ class Truck():
             package.TimeDelivered = timeDelivered
             deliveredPackages.insert_package(package)
         self._DISTANCE_TRAVELLED += distanceTraveled
+        return self._DISTANCE_TRAVELLED

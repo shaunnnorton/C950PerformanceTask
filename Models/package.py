@@ -15,6 +15,7 @@ class Package():
         self.WEIGHT = weight
         self.NOTES = notes
         self.TimeDelivered = timedelta()
+        self.TransitTime = timedelta()
 
     def toTuple(self):
         """Returns a tuple containg all the Package information."""

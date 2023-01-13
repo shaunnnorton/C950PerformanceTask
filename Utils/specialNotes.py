@@ -29,7 +29,7 @@ class Actions():
                     return False , ()
             case specialActions.TRUCK.value:
                 # print("CASE 2")
-                if specialNote[1] != truck.getTruckNumber:
+                if specialNote[1] != truck.getTruckNumber():
                     return False , ()
                 else:
                     return True , ()
@@ -47,16 +47,17 @@ class Actions():
 
                 day,opening = Utils.getDefaultDates()
                 delayedTime = timedelta(hours=specialNote[3],minutes=specialNote[4])
+                #print("TEST", currentTime, delayedTime)
                 if delayedTime < currentTime:
                     package = packages.select_package(specialNote[1])
                     newAddress = packages.addresses[specialNote[2]]
                     package.ADDRESS = newAddress.Street
                     package.ZIP = newAddress.ZIP
                     return True , ()
-                else: 
+                else:
                     return False , ()
             case _:
-                # print("NO CASE")
+                #print("NO CASE")
 
                 return True, ()
 

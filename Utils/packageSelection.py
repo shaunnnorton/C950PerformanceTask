@@ -38,7 +38,7 @@ class selectPackage():
         return closest
 
     @staticmethod
-    def addPackage(current_package: Package , unassigned_packages: Packages, assigned_packages: Packages, truck: Truck, time, distance:int, route: int):
+    def addPackage(current_package: Package , unassigned_packages: Packages, assigned_packages: Packages, truck: Truck, time:timedelta, distance:int, route: int):
         #print(current_package.ID)
         packageNote = sn.Actions.translateAction(current_package.NOTES, current_package.ID)
         canAdd, alsoAdd = sn.Actions.verifyAvalible(packageNote,truck,time,unassigned_packages)
@@ -47,10 +47,12 @@ class selectPackage():
                 if len(alsoAdd) == 0:
                     truck.addPackage((current_package.ID,distance),unassigned_packages, route)
                     assigned_packages.insert_package(current_package)
+                    current_package.TransitTime = time
                 else:
                     alsoAdd = list(alsoAdd)
                     truck.addPackage((current_package.ID,distance),unassigned_packages, route)
                     assigned_packages.insert_package(current_package)
+                    current_package.TransitTime = time
                     current = (current_package,0)
                     alsoAdd.remove(current[0].ID)
                     loop_packages = Packages()
@@ -62,6 +64,7 @@ class selectPackage():
                         next = selectPackage.selectNextShortest(loop_packages,current[0].ADDRESS,unassigned_packages.addresses,truck,time)
                         truck.addPackage((next[0].ID,next[1]), unassigned_packages, route)
                         loop_packages.delete_package(next[0].ID)
+                        next.TransitTime = time
                         current = next
                         alsoAdd.remove(next[0].ID)
                         assigned_packages.insert_package(current[0])

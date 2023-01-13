@@ -132,15 +132,46 @@ from Utils.delivery import Delivery
 
 # """
 
-new_delivery = Delivery("Data/WGUPS Package File - Sheet1.csv","Data/DistanceTable - Sheet1.csv")
-new_delivery.loadTruck(new_delivery.Truck1,timedelta(hours=8))
-new_delivery.loadTruck(new_delivery.Truck2,timedelta(hours=8))
+# new_delivery = Delivery("Data/WGUPS Package File - Sheet1.csv","Data/DistanceTable - Sheet1.csv")
+# new_delivery.loadTruck(new_delivery.Truck1,timedelta(hours=8))
+# new_delivery.loadTruck(new_delivery.Truck2,timedelta(hours=8))
 
-print(new_delivery.Truck1._PACKAGES)
-print(new_delivery.Truck2._PACKAGES)
+# print(new_delivery.Truck1._PACKAGES)
+# print(new_delivery.Truck2._PACKAGES)
 
-new_delivery.Truck1.deliverPackages(timedelta(hours=8),new_delivery.assigned_packages,new_delivery.delivered_packages)
+# new_delivery.Truck1.deliverPackages(timedelta(hours=8),new_delivery.assigned_packages,new_delivery.delivered_packages)
+# new_delivery.Truck2.deliverPackages(timedelta(hours=8),new_delivery.assigned_packages,new_delivery.delivered_packages)
 
-print(new_delivery.delivered_packages.get_packages())
+# print(new_delivery.distanceToHub(new_delivery.Truck1))
+# total_distance = new_delivery.Truck1._DISTANCE_TRAVELLED + new_delivery.distanceToHub(new_delivery.Truck1)
+# return_time =timedelta(hours=8) + timedelta(hours=total_distance/18)
 
-print(new_delivery.distanceToHub(new_delivery.Truck1))
+# print(return_time)
+
+# total_distance = new_delivery.Truck2._DISTANCE_TRAVELLED + new_delivery.distanceToHub(new_delivery.Truck2)
+# return_time =timedelta(hours=8) + timedelta(hours=total_distance/18)
+
+# print(return_time)
+
+# new_delivery.loadTruck(new_delivery.Truck1,return_time)
+# new_delivery.Truck1.deliverPackages(return_time,new_delivery.assigned_packages,new_delivery.delivered_packages)
+
+# total_distance = new_delivery.Truck1._DISTANCE_TRAVELLED + new_delivery.distanceToHub(new_delivery.Truck1)
+# return_time =timedelta(hours=8) + timedelta(hours=total_distance/18)
+
+# print(return_time)
+
+# new_delivery.loadTruck(new_delivery.Truck2,return_time)
+# new_delivery.Truck2.deliverPackages(return_time,new_delivery.assigned_packages,new_delivery.delivered_packages)
+
+# total_distance = new_delivery.Truck2._DISTANCE_TRAVELLED + new_delivery.distanceToHub(new_delivery.Truck2)
+# return_time =timedelta(hours=8) + timedelta(hours=total_distance/18)
+
+# print(return_time)
+
+
+new_delivery = new_delivery = Delivery("Data/WGUPS Package File - Sheet1.csv","Data/DistanceTable - Sheet1.csv", timedelta(hours=8))
+new_delivery.createRoutes()
+new_delivery.deliverAll()
+
+print(new_delivery.getAllPackageStatus(timedelta(hours=9)))
