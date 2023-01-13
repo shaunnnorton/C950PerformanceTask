@@ -1,13 +1,13 @@
 
 class Address():
-    ID = None
-    Street = None
-    ZIP = None 
-    connections = []
+    """Class to provide data models for Address Objects"""
     def __init__(self,id: int, street: str, zip: str) -> None:
+        """Initialize all Class Variables"""
         self.ID = id
         self.Street = street
         self.ZIP = zip
+        self.connections = []
 
     def add_connections(self, connections):
-        self.connections =  connections #sorted(connections, key=lambda val: val[1])   #connections.sorted(key=lambda val: val[1])
+        """Set the connections variable to a new value."""
+        self.connections =  connections

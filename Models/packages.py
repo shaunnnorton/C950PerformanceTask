@@ -55,11 +55,12 @@ class Packages():
 
 
     def get_packages(self):
+        """Returns all packages in the has table as a set"""
         packages = set()
-        for bucket in self.packages:
-            for j in bucket:
+        for bucket in self.packages:#Iterate through each bucket in the hash table. 
+            for j in bucket: #Iterate through the bucket adding the package to the set
                 packages.add(j)
-        return packages
+        return packages #retur the set of all packages.
 
 
     def resize_hash_table(self):
@@ -77,5 +78,6 @@ class Packages():
 
 
     def setAddresses(self, addresses):
+        """Sets the addreses variable of the hash table"""
         self.addresses = addresses
     
