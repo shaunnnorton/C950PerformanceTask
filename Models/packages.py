@@ -56,10 +56,10 @@ class Packages():
 
     def get_packages(self):
         """Returns all packages in the has table as a set"""
-        packages = set()
+        packages = list()
         for bucket in self.packages:#Iterate through each bucket in the hash table. 
             for j in bucket: #Iterate through the bucket adding the package to the set
-                packages.add(j)
+                packages.append(j)
         return packages #retur the set of all packages.
 
 
