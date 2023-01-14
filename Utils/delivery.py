@@ -102,7 +102,10 @@ class Delivery():
                                             departureTime,
                                             firstPackage[1],
                                             route)
-        
+        try:
+            len(truck._PACKAGES[route-1])
+        except:
+            truck._PACKAGES.append([])
         while len(truck._PACKAGES[route-1]) < 16: #Add packages until the trucks lenght is 16 or non are avalible. After avalible deadlined packages are exuasted.
             nextPackage = selectPackage.selectNextShortest(self.unassigned_packages, #Select the next package
                                                            self.assigned_packages.select_package(truck._PACKAGES[route-1][-1][0]).ADDRESS,
@@ -154,7 +157,7 @@ class Delivery():
         delivered = package.TimeDelivered #get the packages time deliverd
         if time < transit: #If time is before the time it is in transit it is at the hub
             return PackageFields.HUB_STATUS
-        elif time > transit and time < delivered: #If the time is between transit and deliverd it is in transit
+        elif time >= transit and time < delivered: #If the time is between transit and deliverd it is in transit
             return PackageFields.TRANSIT_STATUS
         else: #Otherwise the package is in a delivered status
             return PackageFields.DELIVERED_STATUS

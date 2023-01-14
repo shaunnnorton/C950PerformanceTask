@@ -11,14 +11,14 @@ Planner = Delivery("Data/WGUPS Package File - Sheet1.csv","Data/DistanceTable - 
 Planner.createRoutes()
 Planner.deliverAll()
 
-def promptUser() -> str:
+def promptUser() -> bool:
     actions = ("++++++++++++++++++++++++++++++++++++++++++++++++++++++\n" +
-               "[1] Show Package Status                               \n" + 
-               "[2] Show All Package Status                           \n" +
-               "[3] Show Total Mileage                                \n" +
-               "[4] Exit                                              \n" +
-               "++++++++++++++++++++++++++++++++++++++++++++++++++++++\n")
-    select_action = input("What Action would you like to take? (Enter a number!) \n {actions}")
+               " [1] Show Package Status                               \n" + 
+               " [2] Show All Package Status                           \n" +
+               " [3] Show Total Mileage                                \n" +
+               " [4] Exit                                              \n" +
+               " ++++++++++++++++++++++++++++++++++++++++++++++++++++++\n")
+    select_action = input(f"What Action would you like to take? (Enter a number!) \n {actions}")
     match select_action.strip():
         case "1":
             package_input = input("Please input the package id:\t")
@@ -26,9 +26,9 @@ def promptUser() -> str:
             package_id = None
             time = None
             try:
-                package_id = int(package_id.strip())
-                hours = int(time_input.strip()[::2])
-                minutes = int(time_input.strip()[2:4])
+                package_id = int(package_input.strip())
+                hours = int(time_input.split(":")[0])
+                minutes = int(time_input.split(":")[1])
                 time = timedelta(hours=hours,minutes=minutes)
             except:
                 print("There was an issue with the input")
@@ -47,8 +47,8 @@ def promptUser() -> str:
             time_input =  input("What time would you like to know the status at? (24hour format HH:MM):\t")
             time = None
             try:
-                hours = int(time_input.strip()[::2])
-                minutes = int(time_input.strip()[2:4])
+                hours = int(time_input.split(":")[0])
+                minutes = int(time_input.split(":")[1])
                 time = timedelta(hours=hours,minutes=minutes)
             except:
                 print("There was an issue with the input")
@@ -63,11 +63,11 @@ def promptUser() -> str:
                 print(f"Package {package.ID} is delivered at {time}")
             print("\n Packages En Route \n")
             for package in all_statues[PackageFields.TRANSIT_STATUS]:
-                print(f"Package {package.ID} is delivered at {time}")
+                print(f"Package {package.ID} is en route at {time}")
         case "3":
-            print(f"TRUCK 1 Traveled: {Planner.Truck1._DISTANCE_TRAVELED}")
-            print(f"TRUCK 2 Traveled: {Planner.Truck2._DISTANCE_TRAVELED}")
-            print(f"The combined total distance traveled was: {Planner.Truck1._DISTANCE_TRAVELED + Planner.Truck2._DISTANCE_TRAVELED}")
+            print(f"TRUCK 1 Traveled: {Planner.Truck1._DISTANCE_TRAVELLED}")
+            print(f"TRUCK 2 Traveled: {Planner.Truck2._DISTANCE_TRAVELLED}")
+            print(f"The combined total distance traveled was: {Planner.Truck1._DISTANCE_TRAVELLED + Planner.Truck2._DISTANCE_TRAVELLED}")
         case "4":
             return False
         case _:
@@ -79,4 +79,4 @@ def promptUser() -> str:
 if __name__=="__main__":
     run = True
     while run:
-        promptUser()
+        run = promptUser()
