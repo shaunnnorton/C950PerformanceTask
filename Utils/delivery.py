@@ -102,19 +102,16 @@ class Delivery():
                                             departureTime,
                                             firstPackage[1],
                                             route)
-        try:
-            len(truck._PACKAGES[route-1])
-        except:
-            truck._PACKAGES.append([])
-        while len(truck._PACKAGES[route-1]) < 16: #Add packages until the trucks lenght is 16 or non are avalible. After avalible deadlined packages are exuasted.
-            nextPackage = selectPackage.selectNextShortest(self.unassigned_packages, #Select the next package
-                                                           self.assigned_packages.select_package(truck._PACKAGES[route-1][-1][0]).ADDRESS,
-                                                           self.unassigned_packages.addresses,
-                                                           truck,
-                                                           departureTime)
-            if nextPackage[0] == None:
-                break
-            selectPackage.addPackage(nextPackage[0],self.unassigned_packages,self.assigned_packages,truck,departureTime,nextPackage[1],route) #add the packge to the truck
+        if(firstPackage[0] != None):
+            while len(truck._PACKAGES[route-1]) < 16: #Add packages until the trucks lenght is 16 or non are avalible. After avalible deadlined packages are exuasted.
+                nextPackage = selectPackage.selectNextShortest(self.unassigned_packages, #Select the next package
+                                                            self.assigned_packages.select_package(truck._PACKAGES[route-1][-1][0]).ADDRESS,
+                                                            self.unassigned_packages.addresses,
+                                                            truck,
+                                                            departureTime)
+                if nextPackage[0] == None:
+                    break
+                selectPackage.addPackage(nextPackage[0],self.unassigned_packages,self.assigned_packages,truck,departureTime,nextPackage[1],route) #add the packge to the truck
         
     def distanceToHub(self, truck: Truck, route: int) -> float:
         """Calculate a trucks distance to the hub at the end of a route"""
