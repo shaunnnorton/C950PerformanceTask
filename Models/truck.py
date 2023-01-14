@@ -13,6 +13,7 @@ class Truck():
         self._PACKAGES = []
         self._DISTANCE_TRAVELLED = float()
         self._TRUCK_NUMBER = truck_number
+        self.routes = []
 
     def setDriver(self, name:str):
         """Set the driver field of the Truck"""
@@ -46,22 +47,23 @@ class Truck():
     def getAllRoutesLength(self):
         """Returns the lenght of all the routes added together"""
         distance = 0
-        for route in self._PACKAGES:#loop through the routes in packages
+        for route in self.routes[1::]:#loop through the routes in packages
             for package in route: #loop throught the packages in the route
                 distance += package[1] #add the distance of the package to the total distance
+        for retdistance in self.routes[0]:
+            distance += retdistance
         return distance
 
-    def deliverPackages(self, departTime: timedelta, packagesHash: Packages, deliveredPackages: Packages, route: int):
+    def deliverPackages(self, departTime: timedelta, deliveredPackages: Packages, route: int):
         """Sets the staus to deliverd and sets the correct delivered time for each package in the route."""
         distanceTraveled = 0 #set route distance traveled to 0
-        for stop in self._PACKAGES[route-1]: #Loop thorugh the route provided.
+        for stop in self.routes[route]: #Loop thorugh the route provided.
             distanceTraveled += stop[1] #add the distance at the stop to the distance traveled
-
-            package = packagesHash.select_package(stop[0]) #Get the package object at the stop
+            package = stop[0]
             package.STATUS = PackageFields.DELIVERED_STATUS #Set the package Status
             
             timeDelivered = timedelta(hours=distanceTraveled/18) + departTime #calculates the time delivered of the package
             package.TimeDelivered = timeDelivered #Sets the time delivered of the package
             deliveredPackages.insert_package(package) #Adds the package to the delivered packages HashTable
-        self._DISTANCE_TRAVELLED += distanceTraveled #add the distanct traveled to the Trucks total distance. 
+        self._DISTANCE_TRAVELLED += (distanceTraveled + self.routes[0][route-1]) #add the distanct traveled to the Trucks total distance. 
         return self._DISTANCE_TRAVELLED
