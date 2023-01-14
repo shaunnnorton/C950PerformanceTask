@@ -134,7 +134,7 @@ class Delivery():
 
     def createRoutes(self) -> None:
         """Creates all rotues needed to deliver all packages in 2 Trucks."""
-        self.loadTruck(self.Truck1, self.initial_time) #Load the trucks first route using the inital time
+        self.loadTruck(self.Truck1, timedelta(hours=9,minutes=5)) #Load the trucks first route using the inital time
         self.loadTruck(self.Truck2, self.initial_time) #Load the trucks first route using the inital time
         truck1_return_distance = self.distanceToHub(self.Truck1,1) #get distance needed for the truck to return to the warehouse
         truck2_return_distance = self.distanceToHub(self.Truck2,1) #get distance needed for the truck to return to the warehouse
@@ -142,7 +142,7 @@ class Delivery():
             truck1_total = self.Truck1.getAllRoutesLength() + truck1_return_distance #Calculate the total length of the route and distacne to come back 
             truck2_total = self.Truck2.getAllRoutesLength() + truck2_return_distance #Calculate the total length of the route and distacne to come back
             if truck1_total < truck2_total: #Use the truck that comes back first I.E. Has the shortest total
-                self.loadTruck(self.Truck1, timedelta(hours=truck1_total/18) + self.initial_time) #load truck again, with new departure time. 
+                self.loadTruck(self.Truck1, timedelta(hours=truck1_total/18) + timedelta(hours=9,minutes=5)) #load truck again, with new departure time. 
             else:
                 self.loadTruck(self.Truck2, timedelta(hours=truck1_total/18) + self.initial_time) #load truck again, with new departure time. 
 
