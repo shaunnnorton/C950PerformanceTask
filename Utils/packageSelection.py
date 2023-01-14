@@ -55,7 +55,7 @@ class selectPackage():
                         next = selectPackage.selectNextShortest(loop_packages,current[0].ADDRESS,unassigned_packages.addresses,truck,time) #get the next closet packge from the loop packges
                         truck.addPackage((next[0].ID,next[1]), unassigned_packages, route)# add the next packge to the truck
                         loop_packages.delete_package(next[0].ID) #remove the next packge from loop_packages hash table
-                        next.TransitTime = time #set the packges transit time. 
+                        next[0].TransitTime = time #set the packges transit time. 
                         current = next # Iterate current to the next package
                         alsoAdd.remove(next[0].ID) #Remove the next packages id from also add
                         assigned_packages.insert_package(current[0]) #add the packge to assigned packages. 

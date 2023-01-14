@@ -23,7 +23,7 @@ class Actions():
         match specialNote[0]:#match the first value of the special note to a special action. 
             case specialActions.DELAY.value: #Action to delay package. 
                 delayedTime = timedelta(hours=specialNote[1],minutes=specialNote[2]) #get the time to delay to
-                if delayedTime < currentTime: #Check if the current time is past the delayed time
+                if delayedTime <= currentTime: #Check if the current time is past the delayed time
                     return True , () 
                 else:
                     return False , ()
