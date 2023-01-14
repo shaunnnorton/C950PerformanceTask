@@ -13,7 +13,7 @@ class Truck():
         self._PACKAGES = []
         self._DISTANCE_TRAVELLED = float()
         self._TRUCK_NUMBER = truck_number
-        self.routes = []
+        self.routes = [[]]
 
     def setDriver(self, name:str):
         """Set the driver field of the Truck"""

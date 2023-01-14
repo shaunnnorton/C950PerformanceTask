@@ -9,8 +9,8 @@ from datetime import datetime,timedelta
 class selectPackage():
     """Class to provide functionality for selecting and adding a package to a truck"""
     @staticmethod
-    def selectNextShortest(unassignedPackages: Packages, currentAddress: str, addressList: dict) -> tuple:
-        startAddress = addressList[addressList[-1][currentAddress]]#Get initial Address Object
+    def selectNextShortest(unassignedPackages: Packages, currentAddress: int, addressList: dict) -> tuple:
+        startAddress = addressList[currentAddress]#Get initial Address Object
         closest= (None, 10000.00) #init the closest variable
         for package in unassignedPackages.get_packages():#iterate through all provided packages
             comparePackageAddress = addressList[addressList[-1][package.ADDRESS]] #Get the address from the package.
@@ -69,7 +69,11 @@ class selectPackage():
         deadlineString = package.DEADLINE #Get the deadline string 
         deadline = None
         try: #Try to parse deadline as datetime. 
-            deadline = datetime.strptime(deadlineString,"%H:%M %p")
+            split = deadlineString.strip(" AMP").split(":")
+            hours = int(split[0])
+            minutes = int(split[1])
+            
+            deadline = timedelta(hours=hours, minutes=minutes)
             return deadline
         except: #Could not parse. 
             

@@ -36,6 +36,7 @@ class Actions():
                 for group in packages.grouped_packages: #loop the grouped packages set in the packages hash table 
                     if specialNote[1] in group: #check if the currnent package is in a group
                         if len(group)+len(truck.getPackages()[-1])<=16: #Check if there is room in the truck for all the grouped packages.
+                            packages.grouped_packages.remove(group)
                             return True, tuple(group)
                         else: #return false if there is not room for the package. 
                             return False, ()
