@@ -6,6 +6,7 @@ from Models.address import Address
 from Data.package_data import PackageData, PackageFields
 from Data.address_data import AddressData
 from Utils.packageSelection import selectPackage
+from Utils.specialNotes import Actions
 
 from datetime import timedelta
 
@@ -30,6 +31,8 @@ class Delivery():
         self.assigned_packages.setAddresses(addresses)
         self.delivered_packages.setAddresses(addresses)
         
+        Actions.groupPackages(self.unassigned_packages)
+
         self.hubAddress = addresses[0]
 
         for package in self.unassigned_packages.get_packages():#Add all packages with a deadline to deadlined packages
@@ -44,6 +47,7 @@ class Delivery():
     def loadTruck(self, truck: Truck, departureTime: timedelta):
         """Loads packages starting with deadlined packages into a truck"""
         route = len(truck.getPackages())+1 #Get the new route number. 
+        truck._PACKAGES.append([])
         firstPackage = None
         match len(self.deadlined_packages.get_packages()) > 0: #Check if there are still deadlined packages to adds
             case True:#add deadlined packges
@@ -68,8 +72,15 @@ class Delivery():
                                                                     self.deadlined_packages.addresses,
                                                                     truck,
                                                                     departureTime)
+                        
+                        
+
                         if nextPackage[0] == None: #If there is no next package I.e all not avalible or empty set break. 
                             break
+
+                        if self.unassigned_packages.select_package(nextPackage[0].ID) == None:
+                            self.deadlined_packages.delete_package(nextPackage[0].ID)
+                            continue
 
                         selectPackage.addPackage(nextPackage[0],self.unassigned_packages,self.assigned_packages,truck,departureTime,nextPackage[1],route)# add the next packge to the truck
                         self.deadlined_packages.delete_package(nextPackage[0].ID) # remove the package from the deadlined packges. 
@@ -141,12 +152,13 @@ class Delivery():
             depart_Time = self.assigned_packages.select_package(self.Truck1._PACKAGES[index][-1][0]).TransitTime #Set the depart time to the depart time of the first package in the route
             self.Truck1.deliverPackages(depart_Time,self.assigned_packages,self.delivered_packages,index+1) #Deliver the packges in the truck
             self.Truck1._DISTANCE_TRAVELLED += self.distanceToHub(self.Truck1,index+1) #add the distance to hub to the total distanct traveled
-       
+            
+
         for index, route in enumerate(self.Truck2._PACKAGES):
             depart_Time = self.assigned_packages.select_package(self.Truck2._PACKAGES[index][-1][0]).TransitTime #Set the depart time to the depart time of the first package in the route
             self.Truck2.deliverPackages(depart_Time,self.assigned_packages,self.delivered_packages,index+1) #Deliver the packges in the truck
             self.Truck2._DISTANCE_TRAVELLED += self.distanceToHub(self.Truck2,index+1) #add the distance to hub to the total distanct traveled
-            
+
     def getPackageStatus(self, id: int, time: timedelta) -> PackageFields:
         """Get the status of a package at a specific time"""
         package = self.delivered_packages.select_package(id) #Get the package
