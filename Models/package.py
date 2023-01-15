@@ -4,7 +4,7 @@ from datetime import timedelta
 class Package():
     """Class to provide a data model for a Package"""
     def __init__(self,id: int,address: str,deadline: str,city: str,state: str,zip: str ,status: PackageFields, weight: float, notes: str) -> None:
-        """Initialize Package with all variables"""
+        """O(1):O(1)Initialize Package with all variables"""
         self.ID = id
         self.ADDRESS = address
         self.DEADLINE = deadline
@@ -18,5 +18,5 @@ class Package():
         self.TransitTime = timedelta()
 
     def toTuple(self):
-        """Returns a tuple containg all the Package information."""
-        return (self.ID, self.ADDRESS, self.DEADLINE, self.CITY, self.STATE, self.ZIP, self.STATUS)
+        """O(1):O(1) Returns a tuple containg all the Package information."""
+        return (self.ID, self.ADDRESS, self.DEADLINE, self.CITY, self.STATE, self.ZIP, self.STATUS, self.WEIGHT, self.NOTES)

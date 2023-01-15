@@ -5,13 +5,20 @@ from Data.package_data import PackageFields
 from Utils.delivery import Delivery
 
 
+###################################################################
+#IDENTIFICAITON INFORMATION
+#NAME: SHAUN NORTON
+#STUDENT ID: 010483427
+##################################################################
 
 
-Planner = Delivery("Data/WGUPS Package File - Sheet1.csv","Data/DistanceTable - Sheet1.csv", timedelta(hours=8))
-Planner.createRoutes()
-Planner.deliverAll()
+
+Planner = Delivery("Data/WGUPS Package File - Sheet1.csv","Data/DistanceTable - Sheet1.csv", timedelta(hours=8)) #O(n^4):O(n^3) Create the delivery Object
+Planner.createRoutes() # O(n^5):O(n^4) Create all the routes
+Planner.deliverAll() # O(n^4):O(n^2) Deliver all the packages
 
 def promptUser() -> bool:
+    """O(n) Prompt the user for actions and display status"""
     actions = ("++++++++++++++++++++++++++++++++++++++++++++++++++++++\n" +
                " [1] Show Package Status                               \n" + 
                " [2] Show All Package Status                           \n" +

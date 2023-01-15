@@ -5,7 +5,7 @@ class AddressData():
     """Class to provide methods to extract data from a csv containing all the address data"""
     @staticmethod
     def getAddresses(address_file: str) -> dict:
-        """Creates an Address object using each Addres row in the csv.
+        """O(n^2):O(n^2)Creates an Address object using each Addres row in the csv.
             Parameters:
                 address_file (str) The path to the csv to extract data from
             returns: 
@@ -21,7 +21,7 @@ class AddressData():
             hubRow = reader.__next__() #set the hub row manually as it follows a different format than other rows. 
             hubAddress = Address(0,"4001 South 700 East","84107")
             hubConnections = [] #init the hubs connections property
-            for index, item in enumerate(hubRow[2:]): #populat the hub connections
+            for index, item in enumerate(hubRow[2:]): #populat the hub connections O(n)
                 if item == '': #if data is blank connection is to long to be viable.
                     hubConnections.append((index, 10000.0))
                 else:
@@ -33,14 +33,14 @@ class AddressData():
             
             #Create the remaining addresses and connections from the rows in the csv. 
             id_count = 1 #start at Index/id 1
-            for row in reader: #Loop through the rows. 
+            for row in reader: #Loop through the rows.  O(n)
                 id=id_count
                 address = row[1]
                 street, ZIP = AddressData.parseAddress(address)#parse the address data into a useable format. 
                 new_address = Address(id,street,ZIP) #create address object. 
 
                 connections=[] #init connections
-                for index, item in enumerate(row[2:]):#add all connections from the remaining data 
+                for index, item in enumerate(row[2:]):#add all connections from the remaining data O(n)
                     if item == "": #default to distance of 10000.0 if no data
                         connections.append((index, 10000.0))
                     else:
