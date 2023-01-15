@@ -22,6 +22,15 @@ class Packages():
         if len(self.packages[bucket]) > self.hash_buckets*1.5: #Check if too many collisions in the table
             self.resize_hash_table() #O(n^2) Resize the table
 
+    def insert_new_package(self, ID, address, deadline, city, zipcode, weight, status):
+        """O(n^2):O(n) Inserts a Package Object into the hash table."""
+        package = Package(ID, address,deadline,city,"",zipcode,status,weight," | ")
+        bucket = self.calculate_bucket(package.ID)
+        self.packages[bucket].append(package) #Add the Package to the bucket
+        if len(self.packages[bucket]) > self.hash_buckets*1.5: #Check if too many collisions in the table
+            self.resize_hash_table() #O(n^2) Resize the table
+
+
     def search_packages(self,id: int) -> tuple:
         """O(n):O(1) Searches for a package with a matching id in the hash table."""
         bucket_index = self.calculate_bucket(id) #bucket index of the id
