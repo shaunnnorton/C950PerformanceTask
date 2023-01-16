@@ -20,11 +20,11 @@ class Delivery():
     delivered_packages = Packages()
     deadlined_packages = Packages()
     
-    Truck1Leave = timedelta(hours=9, minutes=5)
-    Truck2Leave = timedelta(hours=8)
+    # Truck1Leave = timedelta(hours=9, minutes=5)
+    # Truck2Leave = timedelta(hours=8)
     
-    # Truck1Leave = timedelta(hours=8) 
-    # Truck2Leave = timedelta(hours=9, minutes=30)
+    Truck1Leave = timedelta(hours=8) 
+    Truck2Leave = timedelta(hours=9, minutes=30)
 
 
     def __init__(self, package_csv: str, addresses_csv: str, initialTime: timedelta) -> None:
