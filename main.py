@@ -1,3 +1,11 @@
+
+#SHAUN NORTON STUDENT ID: 010483427
+###################################################################
+#IDENTIFICAITON INFORMATION
+#NAME: SHAUN NORTON
+#STUDENT ID: 010483427
+##################################################################
+
 from datetime import timedelta
 from time import sleep
 from Data.package_data import PackageFields
@@ -5,20 +13,14 @@ from Data.package_data import PackageFields
 from Utils.delivery import Delivery
 
 
-###################################################################
-#IDENTIFICAITON INFORMATION
-#NAME: SHAUN NORTON
-#STUDENT ID: 010483427
-##################################################################
 
 
-
-Planner = Delivery("Data/WGUPS Package File - Sheet1.csv","Data/DistanceTable - Sheet1.csv", timedelta(hours=8)) #O(n^4):O(n^3) Create the delivery Object
-Planner.createRoutes() # O(n^5):O(n^4) Create all the routes
-Planner.deliverAll() # O(n^4):O(n^2) Deliver all the packages
+Planner = Delivery("Data/WGUPS Package File - Sheet1.csv","Data/DistanceTable - Sheet1.csv", timedelta(hours=8)) #Time Complexity O(n^2):Space Complexity O(n^2) Create the delivery Object
+Planner.createRoutes() # Time Complexity O(n^3):Space Complexity O(n^2) Create all the routes
+Planner.deliverAll() # Time Complexity O(n^3):Space Complexity O(n^2) Deliver all the packages
 
 def promptUser() -> bool:
-    """O(n) Prompt the user for actions and display status"""
+    """Time Complexity O(n^2): Space Complexity O(n) Prompt the user for actions and display status"""
     actions = ("++++++++++++++++++++++++++++++++++++++++++++++++++++++\n" +
                " [1] Show Package Status                               \n" + 
                " [2] Show All Package Status                           \n" +
@@ -42,15 +44,24 @@ def promptUser() -> bool:
                 print("There was an issue with the input")
                 input("Please press ENTER to continue.....")
                 return True
-            status = Planner.getPackageStatus(package_id,time)
-            match status:
-                case PackageFields.HUB_STATUS:
-                    print(f"Package: {package_id} is at the Hub at {time}!")
-                case PackageFields.DELIVERED_STATUS:
-                    print(f"Package: {package_id} is delivered as of {time}!")
-                case PackageFields.TRANSIT_STATUS:
-                    print(f"Package: {package_id} is enroute as of {time}!")
 
+            print("\n Package info = (ID, Street address, Deadline, City, State, Zip Code, Status, Weight, Note)")
+
+            status = Planner.getPackageStatus(package_id,time)
+            package = status[1]
+            match status[0]:
+                case PackageFields.HUB_STATUS:
+                    package_info = list(package.toTuple())
+                    package_info[6] = "at the HUB"
+                    print(f"Package {package.ID} is at the Hub at {time}. It will be delivered at: {package.TimeDelivered}. Package information: {package_info}.")
+                case PackageFields.DELIVERED_STATUS:
+                    package_info =  list(package.toTuple())
+                    package_info[6] = "Delivered"
+                    print(f"Package {package.ID} is delivered as of {time}. It was delivered at: {package.TimeDelivered}. Package information: {package_info}.")
+                case PackageFields.TRANSIT_STATUS:
+                    package_info =  list(package.toTuple())
+                    package_info[6] = "en Route"
+                    print(f"Package {package.ID} is en route as of {time}. It will be delivered at: {package.TimeDelivered}. Package information: {package_info}.")
         case "2":
             time_input =  input("What time would you like to know the status at? (24hour format HH:MM):\t")
             time = None
@@ -62,16 +73,24 @@ def promptUser() -> bool:
                 print("There was an issue with the input")
                 input("Please press ENTER to continue.....")
                 return True
-            all_statues = Planner.getAllPackageStatus(time)
+            all_statues = Planner.getAllPackageStatus(time) #O(n^2)
+            print("\n Package info = (ID, Street address, Deadline, City, State, Zip Code, Status, Weight, Note)")
             print("\n Packages at Hub \n")
             for package in all_statues[PackageFields.HUB_STATUS]:
-                print(f"Package {package.ID} is at the Hub at {time}")
+                package_info = list(package.toTuple())
+                package_info[6] = "at the HUB"
+                print(f"Package {package.ID} is at the Hub at {time}. It will be delivered at: {package.TimeDelivered}. Package information: {package_info}.")
             print("\n Delivered Packages \n")
             for package in all_statues[PackageFields.DELIVERED_STATUS]:
-                print(f"Package {package.ID} is delivered as of {time}")
+                package_info =  list(package.toTuple())
+                package_info[6] = "Delivered"
+                print(f"Package {package.ID} is delivered as of {time}. It was delivered at: {package.TimeDelivered}. Package information: {package_info}.")
+
             print("\n Packages En Route \n")
             for package in all_statues[PackageFields.TRANSIT_STATUS]:
-                print(f"Package {package.ID} is en route as of {time}")
+                package_info =  list(package.toTuple())
+                package_info[6] = "en Route"
+                print(f"Package {package.ID} is en route as of {time}. It will be delivered at: {package.TimeDelivered}. Package information: {package_info}.")
         case "3":
             print(f"TRUCK 1 Traveled: {Planner.Truck1._DISTANCE_TRAVELLED}")
             print(f"TRUCK 2 Traveled: {Planner.Truck2._DISTANCE_TRAVELLED}")

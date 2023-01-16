@@ -5,7 +5,7 @@ class AddressData():
     """Class to provide methods to extract data from a csv containing all the address data"""
     @staticmethod
     def getAddresses(address_file: str) -> dict:
-        """O(n^2):O(n^2)Creates an Address object using each Addres row in the csv.
+        """Time Complexity O(n^2): Space Complexity O(n^2)Creates an Address object using each Addres row in the csv.
             Parameters:
                 address_file (str) The path to the csv to extract data from
             returns: 
@@ -57,7 +57,7 @@ class AddressData():
 
     @staticmethod
     def parseAddress(address: str) -> tuple:
-        "Parses an address string from the CSV into and street and zip code strings"
+        """Time Complexity O(1): Space Complexity O(1) Parses an address string from the CSV into and street and zip code strings"""
         split_address = address.split("\n") #split the provided data at the linebreak. 
         address_street = split_address[0].strip()#remove whitespace from the street portion
         address_zip = split_address[1].strip("() ")#remove parenthesis and whitspace from zip code portion.

@@ -24,7 +24,7 @@ class PackageData():
     """Class to parse data from the package csv"""
     @staticmethod
     def getPackages(package_file) -> Packages:
-        """O(n^3): O(n^2)Parses data from the packages CSV to create package objects in a packages hash table."""
+        """Time Complexity O(n^2): Space Complexity O(n) Parses data from the packages CSV to create package objects in a packages hash table."""
         new_packages = Packages() #Create new packages object. 
         with open(package_file, "r") as pkcsv:
             reader = csv.reader(pkcsv)
@@ -41,5 +41,5 @@ class PackageData():
                                         PackageFields.HUB_STATUS,
                                         float(row[PackageFields.MASS_INDEX.value]),
                                         row[PackageFields.SPNOTES_INDEX.value])
-                new_packages.insert_package(new_package) #O(n^2)
+                new_packages.insert_package(new_package) #O(n)
         return new_packages 

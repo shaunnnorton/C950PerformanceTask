@@ -6,10 +6,10 @@ class selectPackage():
     """Class to provide functionality for selecting and adding a package to a truck"""
     @staticmethod
     def selectNextShortest(choice_packages: Packages, currentAddress: int, addressList: dict) -> tuple:
-        """O(n^2):O(n) Gets the package with the address closest to the current address from the provided packages list"""
+        """Time Complexity O(n):Space Complexity O(n) Gets the package with the address closest to the current address from the provided packages list"""
         startAddress = addressList[currentAddress]#Get initial Address Object
         closest= (None, 10000.00) #init the closest variable
-        for package in choice_packages.get_packages():# O(n^2) iterate through all provided packages
+        for package in choice_packages.get_packages():# O(n) + O(n) iterate through all provided packages
             comparePackageAddress = addressList[addressList[-1][package.ADDRESS]] #Get the address from the package.
             if startAddress.ID > comparePackageAddress.ID: # IF the start addresses ID is greater than the comparisonID use the start addresses' connections list
                 distance = startAddress.connections[comparePackageAddress.ID][1] # get the distance from the connections list
@@ -28,7 +28,7 @@ class selectPackage():
 
     @staticmethod
     def get_deadline(package:Package):
-        """O(1):O(1) Gets a packages deadline as a timedelta object"""
+        """Time Complexity O(1):Space Complexity O(1) Gets a packages deadline as a timedelta object"""
         deadlineString = package.DEADLINE #Get the deadline string 
         deadline = None
         try: #Try to parse deadline as timedelta. 

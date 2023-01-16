@@ -14,7 +14,7 @@ class Actions():
     """Provides a class for actions that can be taken from the notes on a package"""
     @staticmethod
     def verifyAvalible(specialNote: tuple, truck: Truck, currentTime: timedelta, packages: Packages) -> tuple:
-        """O(n):O(n) Checks if the conditions of a packages special notes are met and returns a tuple of additionl packages to add."""
+        """Time Complexity O(n):Space Complexity O(n) Checks if the conditions of a packages special notes are met and returns a tuple of additionl packages to add."""
         if len(specialNote) == 0:#If the special note contains no elements default to true with no addtional packages
             return True, ()
         match specialNote[0]:#match the first value of the special note to a special action. 
@@ -55,7 +55,7 @@ class Actions():
     
     @staticmethod
     def translateAction(note: str, package: int) -> tuple:
-        """ O(n):O(n) Translates a note from a package into a meaningfull tuple"""
+        """ Time Complexity O(n):Space Complexity O(n) Translates a note from a package into a meaningfull tuple"""
         if note == " | ": #If the note matches the default case return a default tuple.
             return (-1,package)
         split = note.split("|") #Split the note at the bar to gather the second part of the string.
@@ -84,8 +84,8 @@ class Actions():
 
     @staticmethod
     def groupPackages(packages: Packages):
-        """O(n^3): O(n^3) Populates the grouped packages of the packages hash table"""
-        for package in packages.get_packages():# O(n^2)Iterate through each package
+        """Time Complexity O(n^2): Space Complexity O(n^2) Populates the grouped packages of the packages hash table"""
+        for package in packages.get_packages():# O(n) + O(n^2)Iterate through each package
             translatedNote = Actions.translateAction(package.NOTES, package.ID) # O(n)Translate the note on the package
             if (len(translatedNote)!=0) and (translatedNote[0] == 2): #check the note length > 0 and that it is a grouped package.
                 if len(packages.grouped_packages) == 0: #Create a new set if the grouped packages is empty
