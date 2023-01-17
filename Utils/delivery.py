@@ -20,11 +20,11 @@ class Delivery():
     delivered_packages = Packages()
     deadlined_packages = Packages()
     
-    # Truck1Leave = timedelta(hours=9, minutes=5)
-    # Truck2Leave = timedelta(hours=8)
+    Truck1Leave = timedelta(hours=9, minutes=5)
+    Truck2Leave = timedelta(hours=8)
     
-    Truck1Leave = timedelta(hours=8) 
-    Truck2Leave = timedelta(hours=9, minutes=30)
+    # Truck1Leave = timedelta(hours=8) 
+    # Truck2Leave = timedelta(hours=9, minutes=30)
 
 
     def __init__(self, package_csv: str, addresses_csv: str, initialTime: timedelta) -> None:
@@ -53,31 +53,29 @@ class Delivery():
         """ Time Complexity O(n^2):Space Complexity O(n^2) Loads packages starting with deadlined packages into a truck"""
         route = len(truck.getPackages())+1 #Get the new route number. 
         truck.PACKAGES.append([])
-        if len(self.deadlined_packages.get_packages()) > 0: #Check if there are still deadlined packages to adds
-            for package in self.deadlined_packages.get_packages(): #O(n) + O(n) Check all the packages that have a deadline
-                if len(truck.PACKAGES[route-1]) < 16: #If there is a room on a truck
-                    note = Actions.translateAction(package.NOTES, package.ID) #Get the special note
-                    avalible, add = Actions.verifyAvalible(note,truck,departureTime,self.unassigned_packages) #Verify the package is avalible
-                    group_add = list(add) #Get other packages to add with this package
-                    if avalible: #If the package is avalible
-                        if len(group_add) > 0: #If other packagages have to be added. 
-                            for id in group_add: #O(n) Add all the packages that must be added together.
-                                group_add.remove(id) #Remove the id from the packages to add. 
-                                pk  = self.unassigned_packages.select_package(id) # O(n) get the package object to all
-                                pk.TransitTime = departureTime #set the packages intransit time
-                                truck.PACKAGES[route-1].append(pk) #add the package to the truck. 
-                                self.unassigned_packages.delete_package(id) # O(n) remove the package from unassigned packages
-                                self.assigned_packages.insert_package(pk) # O(n) add the pakcage to tha assigned packages. 
-                                self.deadlined_packages.delete_package(id) # O(n) remove the packages from the deadlined packages.
-                        else:
-                            truck.PACKAGES[route-1].append(package)
-                            package.TransitTime = departureTime
-                            self.unassigned_packages.delete_package(package.ID) # O(n) remove the package from unassigned packages
-                            self.assigned_packages.insert_package(package) # O(n) add the pakcage to tha assigned packages. 
-                            self.deadlined_packages.delete_package(package.ID) # O(n) remove the packages from the deadlined packages.
+        for package in self.deadlined_packages.get_packages(): #O(n) + O(n) Check all the packages that have a deadline
+            if len(truck.PACKAGES[route-1]) < 16 and package.TransitTime == timedelta(): #If there is a room on a truck
+                note = Actions.translateAction(package.NOTES, package.ID) #Get the special note
+                avalible, add = Actions.verifyAvalible(note,truck,departureTime,self.unassigned_packages) #Verify the package is avalible
+                group_add = add #Get other packages to add with this package
+                if avalible: #If the package is avalible
+                    if len(group_add) != 0: #If other packagages have to be added. 
+                        for pakid in group_add: #O(n) Add all the packages that must be added together.
+                            pk  = self.unassigned_packages.select_package(pakid) # O(n) get the package object to all
+                            pk.TransitTime = departureTime #set the packages intransit time
+                            truck.PACKAGES[route-1].append(pk) #add the package to the truck. 
+                            self.unassigned_packages.delete_package(pk.ID) # O(n) remove the package from unassigned packages
+                            self.assigned_packages.insert_package(pk) # O(n) add the pakcage to tha assigned packages. 
+                            self.deadlined_packages.delete_package(pakid) # O(n) remove the packages from the deadlined packages.
+                    else:
+                        truck.PACKAGES[route-1].append(package)
+                        package.TransitTime = departureTime
+                        self.unassigned_packages.delete_package(package.ID) # O(n) remove the package from unassigned packages
+                        self.assigned_packages.insert_package(package) # O(n) add the pakcage to tha assigned packages. 
+                        self.deadlined_packages.delete_package(package.ID) # O(n) remove the packages from the deadlined packages.
             
         for package in self.unassigned_packages.get_packages(): #O(n)*O(n^3) + O(n^2) Check all the packages that are unassigned
-            if len(truck.PACKAGES[route-1]) < 16: #If there is a room on a truck
+            if len(truck.PACKAGES[route-1]) < 16 and package.TransitTime == timedelta(): #If there is a room on a truck
                 note = Actions.translateAction(package.NOTES, package.ID) #Get the special note
                 avalible, group_add = Actions.verifyAvalible(note,truck,departureTime,self.unassigned_packages) #Verify the package is avalible
                 if avalible: #If the package is avalible
@@ -153,25 +151,26 @@ class Delivery():
 
     def createRoutes(self) -> None:
         """ Time Complexity O(n^3):Space Complexity O(n^2) Creates all rotues needed to deliver all packages in 2 Trucks."""
-        self.loadTruck(self.Truck1, self.Truck1Leave) # O(n^2) Load the trucks first route using the inital time
         self.loadTruck(self.Truck2, self.Truck2Leave) # O(n^2) Load the trucks first route using the inital time
+        self.loadTruck(self.Truck1, self.Truck1Leave) # O(n^2) Load the trucks first route using the inital time
+        
         self.createRoute(self.Truck1, 1) # O(n^2) Create route 1
         self.createRoute(self.Truck2, 1) # O(n^2) Create rotue 1
         self.distanceToHub(self.Truck1,1) #get distance needed for the truck to return to the warehouse
         self.distanceToHub(self.Truck2,1) #get distance needed for the truck to return to the warehouse
         
         while len(self.unassigned_packages.get_packages()) > 0: #O(n) + O(n^2)While there are still packages to add. 
-            truck1_total = self.Truck1.getAllRoutesLength() # O(n^2) Calculate the total length of the route and distacne to come back 
-            truck2_total = self.Truck2.getAllRoutesLength() # O(n^2) Calculate the total length of the route and distacne to come back
+            truck1_total = timedelta(hours = self.Truck1.getAllRoutesLength()/18) + self.Truck1Leave # O(n^2) Calculate the total length of the route and distacne to come back 
+            truck2_total = timedelta(hours = self.Truck2.getAllRoutesLength()/18) + self.Truck2Leave # O(n^2) Calculate the total length of the route and distacne to come back
             if truck1_total < truck2_total: #Use the truck that comes back first I.E. Has the shortest total
                 route = len(self.Truck1.routes) #Get the route number
-                self.loadTruck(self.Truck1, timedelta(hours=truck1_total/18) + self.Truck1Leave) # O(n^2) load truck again, with new departure time. 
+                self.loadTruck(self.Truck1, truck1_total) # O(n^2) load truck again, with new departure time. 
                 self.createRoute(self.Truck1, route) # O(n^2) create the next route
                 self.distanceToHub(self.Truck1, route) #add the next distance to the hub
                  
             else:
                 route = len(self.Truck2.routes)
-                self.loadTruck(self.Truck2, timedelta(hours=truck1_total/18) + self.Truck2Leave) # O(n^4) load truck again, with new departure time. 
+                self.loadTruck(self.Truck2, truck2_total) # O(n^4) load truck again, with new departure time. 
                 self.createRoute(self.Truck2, route) # O(n^3) create the next route
                 self.distanceToHub(self.Truck2, route) #add the next distance to the hub
 
